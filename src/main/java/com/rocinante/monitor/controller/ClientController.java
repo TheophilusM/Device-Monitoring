@@ -24,8 +24,20 @@ public class ClientController {
         return clientService.saveClient(client);
     }
 
-    @PostMapping("/stats")
-    public String saveDevice(@RequestBody String action){
+    @PostMapping("/update/{id}")
+    public Client updateDevice(@PathVariable("id") Long id, @RequestBody String status){
+        return clientService.updateClient(id, status);
+    }
+
+    @PostMapping("/stats/start")
+    public String startDeviceCheck(@RequestBody String action){
+        if (!action.equals("start")) return "Invalid action";
         return clientService.checkClients(action);
+    }
+
+    @PostMapping("/stats/stop")
+    public String stopDeviceCheck(@RequestBody String action){
+        if (!action.equals("stop")) return "Invalid action";
+        return clientService.stopCheck(action);
     }
 }

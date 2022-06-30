@@ -10,4 +10,8 @@ public interface ClientService {
     Client saveClient(Client client);
 
     String checkClients(String action);
+
+    String stopCheck(String action);
+
+    Client updateClient(Long id, String status);
 }

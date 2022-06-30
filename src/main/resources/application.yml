@@ -21,4 +21,18 @@ spring:
   config:
     activate:
       on-profile: dev-mysql
+  mail:
+    properties:
+#      mail:
+#        smtp:
+#          auth: true
+#          starttls:
+#            enable: true
+      "[mail.smtp.connectiontimeout]": 5000
+      "[mail.smtp.timeout]": 3000
+      "[mail.smtp.writetimeout]": 5000
+#    host: smtp.gmail.com
+#    port: 587
+#    username: berealanko@gmail.com
+#    password: hfmucszqckgltzfx
 
