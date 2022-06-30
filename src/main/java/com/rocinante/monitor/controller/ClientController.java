@@ -20,7 +20,12 @@ public class ClientController {
     }
 
     @PostMapping("/save")
-    public String saveDevice(){
-        return "Successful";
+    public Client saveDevice(@RequestBody Client client){
+        return clientService.saveClient(client);
+    }
+
+    @PostMapping("/stats")
+    public String saveDevice(@RequestBody String action){
+        return clientService.checkClients(action);
     }
 }

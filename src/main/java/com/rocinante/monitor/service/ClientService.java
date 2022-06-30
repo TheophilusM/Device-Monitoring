@@ -6,4 +6,8 @@ import java.util.List;
 
 public interface ClientService {
     List<Client> getAllClients();
+
+    Client saveClient(Client client);
+
+    String checkClients(String action);
 }
