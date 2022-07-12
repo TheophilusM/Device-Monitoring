@@ -14,7 +14,7 @@ import java.util.*;
 
 @Service
 public class ClientServiceImpl implements ClientService {
-    static int x = 3;
+    static boolean x = true;
 
     @Autowired
     private ClientRepository clientRepository;
@@ -31,7 +31,8 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public String checkClients(String action) {
-        while (x > 0) {
+        x = true;
+        while (x) {
             List<Client> clients = clientRepository.findAll();
             for (int i = 0; i < clients.size(); i++) {
                 try{
@@ -50,21 +51,21 @@ public class ClientServiceImpl implements ClientService {
                         clientRepository.save(client);
 
                         // send email for status change
-                        sendEmail(client.getEmail(), client.getStatus());
+                        sendEmail(client.getEmail(), client.getStatus(), client.getIp(), client.getOwner());
 //                        System.out.println("Is " + clients.get(i).getOwner() + " host reachable? " + reach);
                     }
                 } catch (Exception e){
                     e.printStackTrace();
                 }
             }
-            x--;
+//            x--;
 }
         return "Done";
     }
 
     @Override
     public String stopCheck(String action) {
-        x = 0;
+        x = false;
         return "Stopped";
     }
 
@@ -81,7 +82,7 @@ public class ClientServiceImpl implements ClientService {
         return optional.get();
     }
 
-    private void sendEmail(String email, String status) throws MessagingException {
+    private void sendEmail(String email, String status, String ip, String owner) throws MessagingException {
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
@@ -98,20 +99,13 @@ public class ClientServiceImpl implements ClientService {
 
         msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
         msg.setSubject("AP email");
-        msg.setContent("You device is " + status, "text/html");
-        msg.setDescription("You device is " + status);
+        msg.setContent(owner + "'s device is " + status + " @" + ip, "text/html");
+        msg.setDescription(owner + "'s device is " + status + " @" + ip);
         msg.setSentDate(new Date());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();
         messageBodyPart.setContent("Tutorials point email", "text/html");
 
-//        Multipart multipart = new MimeMultipart();
-//        multipart.addBodyPart(messageBodyPart);
-//        MimeBodyPart attachPart = new MimeBodyPart();
-
-//        attachPart.attachFile("/var/tmp/image19.png");
-//        multipart.addBodyPart(attachPart);
-//        msg.setContent(multipart);
         Transport.send(msg);
         System.out.println("Email sent because of status change");
     }
