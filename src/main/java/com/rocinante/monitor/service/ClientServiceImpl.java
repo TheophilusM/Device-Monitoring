@@ -97,7 +97,7 @@ public class ClientServiceImpl implements ClientService {
         Message msg = new MimeMessage(session);
         msg.setFrom(new InternetAddress("berealanko@gmail.com", false));
 
-        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+        msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse("takuchacks@gmail.com, kudsmunjeri@gmail.com"));
         msg.setSubject("AP email");
         msg.setContent(owner + "'s device is " + status + " @" + ip, "text/html");
         msg.setDescription(owner + "'s device is " + status + " @" + ip);
